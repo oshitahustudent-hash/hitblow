@@ -12,9 +12,13 @@ from .core import judge, make_secret
 
 def play(digits=4):
     secret = make_secret(digits)
-    print(f"Hit & Blow（{digits} 桁・重複なし）")
+    print(f"Hit & Blow（{digits} 桁・重複なし!）")
 
     # ===== ① 開始時に足す（難易度・あいさつ など）: ここに書く =====
+
+    import time
+    start_time = time.time()
+
     
     tries = 0
     while True:
@@ -52,6 +56,9 @@ def play(digits=4):
         if hit == digits:
 
             # ===== ③ 勝利時に足す（スコア・履歴 など）: ここに書く =====
+
+            elapsed_time = time.time() - start_time
+            print(f"経過時間：{elapsed_time:.1f}秒")
 
             print(f"正解！ {tries} 回で当たり（答え {secret}）")
             break
