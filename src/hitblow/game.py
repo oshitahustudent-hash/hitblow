@@ -15,7 +15,9 @@ def play(digits=4):
     print(f"Hit & Blow（{digits} 桁・重複なし）")
 
     # ===== ① 開始時に足す（難易度・あいさつ など）: ここに書く =====
+    from .score import score_manager
     
+    score_manager.reset()
     tries = 0
     while True:
         print(" ")
@@ -28,12 +30,17 @@ def play(digits=4):
         #      if guess == "h":
         #          print(hint(secret)); continue
         from .hint import hint_manager
+        from .score import score_manager
+
+        # 1. 入力前に、ヒントの使用可能ステータスを表示する
 
         # 1. 入力直後に、ヒントの使用可能ステータスを表示する
         hint_manager.show_status()
 
+
         # 2. キーボード入力 'h' でヒント発動
         if guess == "h":
+            score_manager.apply_hint_penalty()  # ★持ち点を1/2に減点
             print(hint_manager.get_hint(secret))
             continue
 
@@ -45,6 +52,7 @@ def play(digits=4):
             print(f"{digits} 桁の数字で入力してね")
             continue
         tries += 1
+        score_manager.deduct_guess()  # ★回答1回ごとに -100点
         if tries > 10:
             break
         hit, blow = judge(secret, guess)
@@ -52,6 +60,7 @@ def play(digits=4):
         if hit == digits:
 
             # ===== ③ 勝利時に足す（スコア・履歴 など）: ここに書く =====
-
+            from .score import score_manager
+            print(f"最終スコア: {score_manager.get_score()} 点")
             print(f"正解！ {tries} 回で当たり（答え {secret}）")
             break
