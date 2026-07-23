@@ -34,6 +34,7 @@ tests/test_core.py
 ## 追加した機能（各ペアが1行ずつ足す）
 game.pyに制限回数を設定、桁数の増加、UIの変更
 hint.pyにhigher＆lowerを表示するヒント機能を追加
+score.pyにスコア計算する機能を追加
 -
 
 ## 進め方
