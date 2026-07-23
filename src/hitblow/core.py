@@ -17,6 +17,9 @@ def judge(secret, guess):
     return hits, common - hits
 
 
-def make_secret(digits=3):
+def make_secret(digits=4):
+    print("hit  … 数字も位置も合っている個数")
+    print("blow … 数字は含まれるが位置が違う個数")
+    print("「h」を入力するとヒントを表示")
     """重複なしの digits 桁の答えを作る。"""
     return "".join(random.sample("0123456789", digits))

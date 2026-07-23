@@ -9,7 +9,8 @@
 from .core import judge, make_secret
 
 
-def play(digits=3):
+
+def play(digits=4):
     secret = make_secret(digits)
     print(f"Hit & Blow（{digits} 桁・重複なし!）")
 
@@ -18,19 +19,38 @@ def play(digits=3):
     import time
     start_time = time.time()
 
+    
     tries = 0
     while True:
+        print(" ")
+        print(f"あと{10-tries}回")
+        
         guess = input("予想 > ").strip()
 
         # ===== ② 入力コマンドに足す（ヒント など）: ここに書く（import もここに） =====
         # 例:  from .hint import hint
         #      if guess == "h":
         #          print(hint(secret)); continue
+        from .hint import hint_manager
+
+        # 1. 入力直後に、ヒントの使用可能ステータスを表示する
+        hint_manager.show_status()
+
+        # 2. キーボード入力 'h' でヒント発動
+        if guess == "h":
+            print(hint_manager.get_hint(secret))
+            continue
+
+        # 3. エラーチェックを通過する「正常な入力」だった場合のみ、直前の入力として記憶する
+        if len(guess) == digits and guess.isdigit():
+            hint_manager.update_last_guess(guess)
 
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してね")
             continue
         tries += 1
+        if tries > 10:
+            break
         hit, blow = judge(secret, guess)
         print(f"  Hit={hit}  Blow={blow}")
         if hit == digits:
